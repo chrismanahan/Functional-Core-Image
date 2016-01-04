@@ -26,7 +26,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var selectedSource: [CIOption] = []
     
     func applySelectedFilters() {
+        let filter = selectedSource
+                        .map { return $0.filter }
+                        .reduce(FuncCI.emptyFilter(), combine: >>>)
         
+        let img = CIImage(image: UIImage(named: "snoo")!)
+        imageView.image = filter(img!).uiImage(img!.extent)
     }
     
     // MARK: - Actions
@@ -34,6 +39,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let row = pickerView.selectedRowInComponent(0)
         let option = pickerSource[row]
         selectedSource.append(option)
+        applySelectedFilters()
         tableView.reloadData()
     }
     
@@ -51,6 +57,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // MARK: Delegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selectedSource.removeAtIndex(indexPath.row)
+        applySelectedFilters()
         tableView.reloadData()
     }
     
