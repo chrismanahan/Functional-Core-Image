@@ -20,15 +20,27 @@ class FuncCI {
         }
     }
     // MARK: Blur
-    class func blur(radius: Double) -> Filter {
-        return { image in
-            return self.imageFor(
-                "CIGaussianBlur",
-                params: [kCIInputRadiusKey: radius],
-                image: image
-            )
-        }
+    class func boxBlur(radius: Double) -> Filter {
+        return blur("Box", radius: radius)
     }
+    
+    class func discBlur(radius: Double) -> Filter {
+        return blur("Disc", radius: radius)
+    }
+    
+    class func gaussianBlur(radius: Double) -> Filter {
+        return blur("Gaussian", radius: radius)
+    }
+    
+    class func motionBlur(radius: Double) -> Filter {
+        return blur("Motion", radius: radius)
+    }
+    
+    class func zoomBlur(radius: Double) -> Filter {
+        return blur("Zoom", radius: radius)
+    }
+    
+    
     
     class func mask(overlay: UIImage) -> Filter {
         return { image in
@@ -95,6 +107,16 @@ class FuncCI {
 //    }
 //    
     // MARK: - Private
+    private class func blur(name: String, radius: Double) -> Filter {
+        return { image in
+            return self.imageFor(
+                "CI\(name)Blur",
+                params: [kCIInputRadiusKey: radius],
+                image: image
+            )
+        }
+    }
+    
     private class func imageFor(filterName: String, var params: [String: AnyObject]?, image: CIImage) -> CIImage {
         if params == nil {
             params = [:]
