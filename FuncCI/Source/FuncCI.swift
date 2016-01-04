@@ -14,6 +14,11 @@ typealias Filter = CIImage -> CIImage
 class FuncCI {
     
     // MARK: - Filters
+    class func emptyFilter() -> Filter {
+        return { image in
+            return image
+        }
+    }
     // MARK: Blur
     class func blur(radius: Double) -> Filter {
         return { image in
