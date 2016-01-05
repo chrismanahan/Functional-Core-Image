@@ -17,14 +17,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var pickerView: UIPickerView!
  
     var pickerSource: [CIOption] = [
-        ("Box Blur", FuncCI.boxBlur(5.0)),
-        ("Disc Blur", FuncCI.discBlur(5.0)),
-        ("Gaussian Blur", FuncCI.gaussianBlur(5.0)),
-        ("Motion Blur", FuncCI.motionBlur(5.0)),
-        ("Zoom Blur", FuncCI.zoomBlur(5.0)),
-        ("Mask", FuncCI.mask(UIImage(named: "tux")!)),
-        ("Monochrome", FuncCI.monochrome(UIColor.sepiaColor())),
-        ("Vignette", FuncCI.vignette(5.0, intensity: 2.5))
+        ("Box Blur", Blur.boxBlur(5.0)),
+        ("Disc Blur", Blur.discBlur(5.0)),
+        ("Gaussian Blur", Blur.gaussianBlur(5.0)),
+        ("Motion Blur", Blur.motionBlur(5.0)),
+        ("Zoom Blur", Blur.zoomBlur(5.0))
     ]
     
     var selectedSource: [CIOption] = []
@@ -32,7 +29,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func applySelectedFilters() {
         let filter = selectedSource
                         .map { return $0.filter }
-                        .reduce(FuncCI.emptyFilter(), combine: >>>)
+                        .reduce(BaseFilter.createEmptyFilter(), combine: >>>)
         
         let img = CIImage(image: UIImage(named: "snoo")!)
         imageView.image = filter(img!).uiImage(img!.extent)
